@@ -3,8 +3,6 @@
   var token = params.get('token') || localStorage.getItem('vv_host_token') || '';
 
   var phaseLine = document.getElementById('phaseLine');
-  var questionCard = document.getElementById('questionCard');
-  var questionText = document.getElementById('questionText');
   var voteCard = document.getElementById('voteCard');
   var resultsCard = document.getElementById('resultsCard');
   var resultsEl = document.getElementById('results');
@@ -83,13 +81,6 @@
   });
 
   socket.on('state', function (s) {
-    if (s.question) {
-      questionText.textContent = s.question;
-      questionCard.classList.remove('hidden');
-    } else {
-      questionCard.classList.add('hidden');
-    }
-
     qIndex = s.qIndex || 0;
     qCount = s.questionCount || 1;
     endsAt = s.phase === 'voting' ? s.endsAt || null : null;
