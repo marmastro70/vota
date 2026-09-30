@@ -239,12 +239,29 @@
     });
 
     socket.on('host:ready', function (data) {
-      log('Host autenticado. Preguntas: ' + (data.questions || []).length);
+      log('Host autenticado. Preguntas en servidor: ' + (data.questions || []).length);
       localStorage.setItem('vv_host_token', token);
       setupEl.classList.add('hidden');
       panelEl.classList.remove('hidden');
       updateQuestion(data.qIndex || 0, (data.questions || []).length, data.question);
-      renderEditor(data.questions || []);
+
+      var saved = null;
+      try {
+        saved = JSON.parse(localStorage.getItem('vv_questions') || 'null');
+      } catch (e) {
+        saved = null;
+      }
+      if (
+        saved &&
+        saved.length &&
+        JSON.stringify(saved) !== JSON.stringify(data.questions || [])
+      ) {
+        renderEditor(saved);
+        socket.emit('host:setQuestions', saved);
+        log('Tus preguntas guardadas en este celular fueron aplicadas.');
+      } else {
+        renderEditor(saved && saved.length ? saved : data.questions || []);
+      }
       updateDiag();
     });
 
@@ -377,7 +394,10 @@
       return;
     }
     if (socket) socket.emit('host:setQuestions', parsed);
-    setSaveStatus('Guardado. Se reinicia a la primera pregunta.', 'ok');
+    try {
+      localStorage.setItem('vv_questions', JSON.stringify(parsed));
+    } catch (e) {}
+    setSaveStatus('Guardado en este celular y en el servidor.', 'ok');
   });
 
   updateDiag();
