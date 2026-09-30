@@ -133,7 +133,6 @@ function doClose() {
   if (state.phase !== 'voting') return;
   clearAutoClose();
   state.phase = 'closed';
-  state.revealed = true;
   state.endsAt = null;
   const result = computeTally();
   broadcastState();

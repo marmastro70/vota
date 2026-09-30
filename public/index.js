@@ -116,7 +116,10 @@
     } else {
       questionCard.classList.add('hidden');
       stage.classList.remove('two-col');
-      phaseLine.textContent = 'Esperando que el conductor abra la votacion';
+      phaseLine.textContent =
+        s.phase === 'closed'
+          ? 'Votacion cerrada - esperando resultados'
+          : 'Esperando que el conductor abra la votacion';
     }
   });
 })();
