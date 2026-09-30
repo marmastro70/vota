@@ -329,3 +329,71 @@ textarea {
   margin-top: 4px;
 }
 
+/* ---- Pantalla grande (PC) ---- */
+body.display {
+  height: 100vh;
+  overflow: hidden;
+}
+
+body.display .stage {
+  height: 100vh;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  padding: 18px 28px;
+  align-content: center;
+  justify-items: center;
+}
+
+body.display .stage.two-col {
+  grid-template-columns: 1.7fr 1fr;
+  align-items: center;
+  justify-items: stretch;
+}
+
+body.display .stage-main {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+body.display .stage-main h1 {
+  font-size: 1.5rem;
+  margin-bottom: 2px;
+}
+
+body.display .question {
+  font-size: 2rem;
+}
+
+body.display .option {
+  padding: 16px 20px;
+  font-size: 1.35rem;
+}
+
+body.display .stage-side {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body.display #qr {
+  padding: 14px;
+}
+
+body.display #qr img,
+body.display #qr canvas {
+  display: block;
+  width: 190px !important;
+  height: 190px !important;
+}
+
+body.display .url {
+  font-size: 1.05rem;
+}
+

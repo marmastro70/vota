@@ -2,39 +2,38 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Vota</title>
     <link rel="stylesheet" href="/app.css" />
   </head>
-  <body>
-    <div class="wrap">
-      <h1 class="center">Vota</h1>
-      <p id="phaseLine" class="sub center">Esperando...</p>
+  <body class="display">
+    <div id="stage" class="stage">
+      <main class="stage-main">
+        <h1 class="center">Vota</h1>
+        <p id="phaseLine" class="sub center">Esperando...</p>
 
-      <div id="questionCard" class="card center hidden">
-        <div id="questionText" class="question"></div>
-        <div id="optionsList" class="options" style="margin-top: 14px"></div>
-      </div>
+        <div id="questionCard" class="card hidden">
+          <div id="questionText" class="question"></div>
+          <div id="optionsList" class="options" style="margin-top: 16px"></div>
+        </div>
 
-      <div id="voteCard" class="card center">
-        <p class="sub" style="margin-bottom: 12px">Escanear para votar</p>
-        <div id="qr"></div>
-        <p style="margin-top: 16px"><code id="voterUrl"></code></p>
-        <p class="sub" style="margin: 12px 0 0">Escribi en el navegador:</p>
-        <div id="voterUrlBig" class="url"></div>
-        <button id="revealBtn" class="btn stop hidden" type="button">VER RESULTADOS</button>
-      </div>
+        <div id="resultsCard" class="card hidden">
+          <div class="reveal-title">Resultados</div>
+          <div id="results" class="results"></div>
+        </div>
+      </main>
 
-      <div id="resultsCard" class="card hidden">
-        <div class="reveal-title">Resultados</div>
-        <div id="results" class="results"></div>
-      </div>
-
-      <div class="card">
-        <p class="sub" style="margin: 0 0 8px">Accesos</p>
-        <a href="/voter.html">Ir a votar</a><br /><br />
-        <a href="/host.html">Panel del conductor</a>
-      </div>
+      <aside class="stage-side">
+        <div id="voteCard" class="card center">
+          <p class="sub" style="margin-bottom: 10px">Escanear para votar</p>
+          <div id="qr"></div>
+          <p class="sub" style="margin: 12px 0 0">Escribi en el navegador:</p>
+          <div id="voterUrlBig" class="url"></div>
+          <p class="sub" style="margin: 10px 0 0; font-size: 0.72rem">
+            <a href="/voter.html">Votar</a> &middot; <a href="/host.html">Panel</a>
+          </p>
+        </div>
+      </aside>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>

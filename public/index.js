@@ -2,14 +2,13 @@
   var params = new URLSearchParams(location.search);
   var token = params.get('token') || localStorage.getItem('vv_host_token') || '';
 
+  var stage = document.getElementById('stage');
   var phaseLine = document.getElementById('phaseLine');
   var questionCard = document.getElementById('questionCard');
   var questionText = document.getElementById('questionText');
   var optionsList = document.getElementById('optionsList');
-  var voteCard = document.getElementById('voteCard');
   var resultsCard = document.getElementById('resultsCard');
   var resultsEl = document.getElementById('results');
-  var revealBtn = document.getElementById('revealBtn');
 
   var endsAt = null;
   var qIndex = 0;
@@ -26,11 +25,9 @@
   }, 250);
 
   var voterUrl = location.origin + '/voter.html';
-  document.getElementById('voterUrl').textContent = voterUrl;
-  var big = document.getElementById('voterUrlBig');
-  if (big) big.textContent = voterUrl;
+  document.getElementById('voterUrlBig').textContent = voterUrl;
   if (window.QRCode) {
-    new QRCode(document.getElementById('qr'), { text: voterUrl, width: 240, height: 240 });
+    new QRCode(document.getElementById('qr'), { text: voterUrl, width: 200, height: 200 });
   }
 
   function renderOptions(options) {
@@ -86,10 +83,6 @@
     ? io({ auth: { role: 'host', token: token } })
     : io({ auth: { role: 'display' } });
 
-  revealBtn.addEventListener('click', function () {
-    socket.emit('host:reveal');
-  });
-
   socket.on('host:denied', function () {
     phaseLine.textContent = 'Token invalido en esta pantalla (modo solo lectura).';
   });
@@ -101,15 +94,14 @@
 
     if (s.revealed && s.result) {
       questionCard.classList.add('hidden');
-      voteCard.classList.add('hidden');
       resultsCard.classList.remove('hidden');
+      stage.classList.add('two-col');
       phaseLine.textContent = 'Resultados - pregunta ' + (s.qIndex + 1) + ' de ' + s.questionCount;
       renderResults(s.result, s.options);
       return;
     }
 
     resultsCard.classList.add('hidden');
-    voteCard.classList.remove('hidden');
 
     if (s.phase === 'voting' && s.question) {
       questionText.textContent = s.question;
@@ -119,12 +111,12 @@
         lastKey = key;
       }
       questionCard.classList.remove('hidden');
+      stage.classList.add('two-col');
       phaseLine.textContent = votingLine();
-      revealBtn.classList.add('hidden');
     } else {
       questionCard.classList.add('hidden');
+      stage.classList.remove('two-col');
       phaseLine.textContent = 'Esperando que el conductor abra la votacion';
-      revealBtn.classList.add('hidden');
     }
   });
 })();
