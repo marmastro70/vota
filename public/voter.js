@@ -31,11 +31,25 @@
   var socket = io({ auth: { role: 'voter', clientId: getClientId() } });
 
   var lastKey = null;
+  var lastOptions = [];
   var currentRound = 0;
-  var votedRound = Number(localStorage.getItem('vv_voted_round') || -1);
+
+  function getVote() {
+    try {
+      return JSON.parse(localStorage.getItem('vv_vote') || 'null');
+    } catch (e) {
+      return null;
+    }
+  }
 
   function hasVoted() {
-    return votedRound === currentRound && currentRound > 0;
+    var v = getVote();
+    return !!v && v.round === currentRound && currentRound > 0;
+  }
+
+  function chosenIndex() {
+    var v = getVote();
+    return hasVoted() ? v.index : -1;
   }
 
   function setStatus(text, kind) {
@@ -44,16 +58,17 @@
   }
 
   function renderOptions(options) {
+    lastOptions = options;
     optionsEl.innerHTML = '';
+    var chosen = chosenIndex();
     options.forEach(function (label, index) {
       var btn = document.createElement('button');
-      btn.className = 'option' + (hasVoted() ? ' chosen' : '');
+      btn.className = 'option' + (chosen === index ? ' chosen' : '');
       btn.type = 'button';
       btn.innerHTML = '<span class="num">' + (index + 1) + '</span>' + label;
       btn.addEventListener('click', function () {
         if (hasVoted()) return;
         socket.emit('vote', { index: index });
-        btn.classList.add('chosen');
       });
       optionsEl.appendChild(btn);
     });
@@ -114,7 +129,7 @@
       questionCard.classList.add('hidden');
     }
 
-    var key = s.qIndex + ':' + s.options.join('|');
+    var key = s.round + ':' + s.qIndex + ':' + s.options.join('|');
     if (key !== lastKey) {
       renderOptions(s.options);
       lastKey = key;
@@ -147,10 +162,14 @@
   });
 
   socket.on('vote:accepted', function (payload) {
-    votedRound = payload && payload.round ? payload.round : currentRound;
-    localStorage.setItem('vv_voted_round', String(votedRound));
+    var round = payload && payload.round ? payload.round : currentRound;
+    var index = payload && typeof payload.index === 'number' ? payload.index : chosenIndex();
+    try {
+      localStorage.setItem('vv_vote', JSON.stringify({ round: round, index: index }));
+    } catch (e) {}
+    renderOptions(lastOptions);
     setStatus('Voto registrado. Gracias!', 'ok');
-    setTimeout(showWaiting, 600);
+    setTimeout(showWaiting, 700);
   });
 
   socket.on('vote:rejected', function (msg) {
