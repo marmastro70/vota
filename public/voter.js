@@ -5,8 +5,19 @@
   var voteCard = document.getElementById('voteCard');
   var questionCard = document.getElementById('questionCard');
   var questionText = document.getElementById('questionText');
+  var countdownEl = document.getElementById('countdown');
   var resultsCard = document.getElementById('resultsCard');
   var resultsEl = document.getElementById('results');
+
+  var endsAt = null;
+  setInterval(function () {
+    if (endsAt) {
+      var left = Math.max(0, Math.round((endsAt - Date.now()) / 1000));
+      countdownEl.textContent = left + ' segundos';
+    } else {
+      countdownEl.textContent = '';
+    }
+  }, 250);
 
   function getClientId() {
     var id = localStorage.getItem('vv_client_id');
@@ -94,6 +105,7 @@
 
   socket.on('state', function (s) {
     if (typeof s.round === 'number') currentRound = s.round;
+    endsAt = s.phase === 'voting' ? s.endsAt || null : null;
 
     if (s.question) {
       questionText.textContent = s.question;

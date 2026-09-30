@@ -3,6 +3,9 @@
   var token = params.get('token') || localStorage.getItem('vv_host_token') || '';
 
   var phaseLine = document.getElementById('phaseLine');
+  var questionCard = document.getElementById('questionCard');
+  var questionText = document.getElementById('questionText');
+  var optionsList = document.getElementById('optionsList');
   var voteCard = document.getElementById('voteCard');
   var resultsCard = document.getElementById('resultsCard');
   var resultsEl = document.getElementById('results');
@@ -11,6 +14,7 @@
   var endsAt = null;
   var qIndex = 0;
   var qCount = 1;
+  var lastKey = null;
 
   function votingLine() {
     var left = endsAt ? Math.max(0, Math.round((endsAt - Date.now()) / 1000)) : 0;
@@ -27,6 +31,16 @@
   if (big) big.textContent = voterUrl;
   if (window.QRCode) {
     new QRCode(document.getElementById('qr'), { text: voterUrl, width: 240, height: 240 });
+  }
+
+  function renderOptions(options) {
+    optionsList.innerHTML = '';
+    options.forEach(function (label, i) {
+      var row = document.createElement('div');
+      row.className = 'option';
+      row.innerHTML = '<span class="num">' + (i + 1) + '</span>' + label;
+      optionsList.appendChild(row);
+    });
   }
 
   function renderResults(result, options) {
@@ -86,6 +100,7 @@
     endsAt = s.phase === 'voting' ? s.endsAt || null : null;
 
     if (s.revealed && s.result) {
+      questionCard.classList.add('hidden');
       voteCard.classList.add('hidden');
       resultsCard.classList.remove('hidden');
       phaseLine.textContent = 'Resultados - pregunta ' + (s.qIndex + 1) + ' de ' + s.questionCount;
@@ -96,13 +111,18 @@
     resultsCard.classList.add('hidden');
     voteCard.classList.remove('hidden');
 
-    if (s.phase === 'voting') {
+    if (s.phase === 'voting' && s.question) {
+      questionText.textContent = s.question;
+      var key = s.qIndex + ':' + s.options.join('|');
+      if (key !== lastKey) {
+        renderOptions(s.options);
+        lastKey = key;
+      }
+      questionCard.classList.remove('hidden');
       phaseLine.textContent = votingLine();
       revealBtn.classList.add('hidden');
-    } else if (s.phase === 'closed') {
-      phaseLine.textContent = 'Votacion cerrada - esperando resultados';
-      revealBtn.classList.toggle('hidden', !token);
     } else {
+      questionCard.classList.add('hidden');
       phaseLine.textContent = 'Esperando que el conductor abra la votacion';
       revealBtn.classList.add('hidden');
     }
