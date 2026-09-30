@@ -6,7 +6,6 @@
   var questionCard = document.getElementById('questionCard');
   var questionText = document.getElementById('questionText');
   var voteCard = document.getElementById('voteCard');
-  var counterEl = document.getElementById('counter');
   var resultsCard = document.getElementById('resultsCard');
   var resultsEl = document.getElementById('results');
   var revealBtn = document.getElementById('revealBtn');
@@ -91,7 +90,6 @@
       questionCard.classList.add('hidden');
     }
 
-    counterEl.textContent = s.total;
     qIndex = s.qIndex || 0;
     qCount = s.questionCount || 1;
     endsAt = s.phase === 'voting' ? s.endsAt || null : null;
