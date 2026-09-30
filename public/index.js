@@ -1,0 +1,121 @@
+(function () {
+  var params = new URLSearchParams(location.search);
+  var token = params.get('token') || localStorage.getItem('vv_host_token') || '';
+
+  var phaseLine = document.getElementById('phaseLine');
+  var questionCard = document.getElementById('questionCard');
+  var questionText = document.getElementById('questionText');
+  var voteCard = document.getElementById('voteCard');
+  var counterEl = document.getElementById('counter');
+  var resultsCard = document.getElementById('resultsCard');
+  var resultsEl = document.getElementById('results');
+  var revealBtn = document.getElementById('revealBtn');
+
+  var endsAt = null;
+  var qIndex = 0;
+  var qCount = 1;
+
+  function votingLine() {
+    var left = endsAt ? Math.max(0, Math.round((endsAt - Date.now()) / 1000)) : 0;
+    return 'Voten ahora (' + left + 's) - pregunta ' + (qIndex + 1) + ' de ' + qCount;
+  }
+
+  setInterval(function () {
+    if (endsAt) phaseLine.textContent = votingLine();
+  }, 250);
+
+  var voterUrl = location.origin + '/voter.html';
+  document.getElementById('voterUrl').textContent = voterUrl;
+  var big = document.getElementById('voterUrlBig');
+  if (big) big.textContent = voterUrl;
+  if (window.QRCode) {
+    new QRCode(document.getElementById('qr'), { text: voterUrl, width: 240, height: 240 });
+  }
+
+  function renderResults(result, options) {
+    var max = result.max || 1;
+    resultsEl.innerHTML = '';
+    var order = options.map(function (_, i) {
+      return i;
+    });
+    order.sort(function (a, b) {
+      return result.counts[b] - result.counts[a] || a - b;
+    });
+    order.forEach(function (i) {
+      var isWinner = result.leaders.indexOf(i) >= 0;
+      var pct = result.total ? Math.round((result.counts[i] / result.total) * 100) : 0;
+
+      var row = document.createElement('div');
+      row.className = 'result-row' + (isWinner ? ' winner' : '');
+
+      var fill = document.createElement('div');
+      fill.className = 'fill';
+      fill.style.width = (result.total ? (result.counts[i] / max) * 100 : 0) + '%';
+
+      var lr = document.createElement('div');
+      lr.className = 'label-row';
+
+      var left = document.createElement('span');
+      left.innerHTML =
+        (isWinner ? '<span class="badge">GANADORA</span>' : '') + (i + 1) + '. ' + options[i];
+
+      var right = document.createElement('span');
+      right.className = 'count';
+      right.textContent = result.counts[i] + ' (' + pct + '%)';
+
+      lr.appendChild(left);
+      lr.appendChild(right);
+      row.appendChild(fill);
+      row.appendChild(lr);
+      resultsEl.appendChild(row);
+    });
+  }
+
+  var socket = token
+    ? io({ auth: { role: 'host', token: token } })
+    : io({ auth: { role: 'display' } });
+
+  revealBtn.addEventListener('click', function () {
+    socket.emit('host:reveal');
+  });
+
+  socket.on('host:denied', function () {
+    phaseLine.textContent = 'Token invalido en esta pantalla (modo solo lectura).';
+  });
+
+  socket.on('state', function (s) {
+    if (s.question) {
+      questionText.textContent = s.question;
+      questionCard.classList.remove('hidden');
+    } else {
+      questionCard.classList.add('hidden');
+    }
+
+    counterEl.textContent = s.total;
+    qIndex = s.qIndex || 0;
+    qCount = s.questionCount || 1;
+    endsAt = s.phase === 'voting' ? s.endsAt || null : null;
+
+    if (s.revealed && s.result) {
+      voteCard.classList.add('hidden');
+      resultsCard.classList.remove('hidden');
+      phaseLine.textContent = 'Resultados - pregunta ' + (s.qIndex + 1) + ' de ' + s.questionCount;
+      renderResults(s.result, s.options);
+      return;
+    }
+
+    resultsCard.classList.add('hidden');
+    voteCard.classList.remove('hidden');
+
+    if (s.phase === 'voting') {
+      phaseLine.textContent = votingLine();
+      revealBtn.classList.add('hidden');
+    } else if (s.phase === 'closed') {
+      phaseLine.textContent = 'Votacion cerrada - esperando resultados';
+      revealBtn.classList.toggle('hidden', !token);
+    } else {
+      phaseLine.textContent = 'Esperando que el conductor abra la votacion';
+      revealBtn.classList.add('hidden');
+    }
+  });
+})();

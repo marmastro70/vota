@@ -1,0 +1,32 @@
+[
+  {
+    "question": "cual es la mascota mas popular",
+    "options": [
+      "Perro",
+      "Gato",
+      "Leon",
+      "Tigre",
+      "Oso"
+    ]
+  },
+  {
+    "question": "Comida favorita de los argentinos",
+    "options": [
+      "Asado",
+      "Pizza",
+      "Milanesa",
+      "Empanadas",
+      "Pastas"
+    ]
+  },
+  {
+    "question": "Que se lleva a una isla desierta",
+    "options": [
+      "Agua",
+      "Cuchillo",
+      "Encendedor",
+      "Soga",
+      "Botiquin"
+    ]
+  }
+]

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Votar</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <h1 class="center">Tu voto</h1>
+
+      <div id="questionCard" class="card center hidden">
+        <div id="questionText" class="question"></div>
+      </div>
+
+      <div id="voteCard" class="card">
+        <div id="options" class="options"></div>
+        <div id="status" class="status center"></div>
+      </div>
+
+      <div id="waiting" class="card center hidden">
+        <div class="big">Gracias</div>
+        <p class="sub">Tu voto fue registrado. Espera al conductor.</p>
+      </div>
+
+      <div id="resultsCard" class="card hidden">
+        <div class="reveal-title">Resultados</div>
+        <div id="results" class="results"></div>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/voter.js"></script>
+  </body>
+</html>

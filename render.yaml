@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: vota
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: HOST_TOKEN
+        sync: false
+      - key: VOTE_SECONDS
+        value: "30"

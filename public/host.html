@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Conductor</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Panel del conductor</h1>
+      <p class="sub">Solo este dispositivo recibe el resultado. Vibra con la opcion ganadora.</p>
+
+      <div id="setup" class="card">
+        <label for="token">Token del conductor</label>
+        <input id="token" type="password" placeholder="token" autocomplete="current-password" />
+        <button id="connect" class="btn primary" type="button">Conectar</button>
+        <div id="setupStatus" class="status"></div>
+      </div>
+
+      <div id="panel" class="hidden">
+        <div class="card center">
+          <span id="phasePill" class="pill">lobby</span>
+          <span id="roundPill" class="pill">ronda 0</span>
+          <span id="qPill" class="pill">pregunta 0/0</span>
+          <div id="total" class="big">0</div>
+          <p class="sub" style="margin: 0">votos recibidos</p>
+          <div id="questionText" class="question" style="margin-top: 10px"></div>
+        </div>
+
+        <div class="card">
+          <label for="seconds">Duracion de la votacion (segundos)</label>
+          <input id="seconds" type="number" min="5" value="30" inputmode="numeric" />
+          <div id="countdown" class="big center">--</div>
+          <button id="open" class="btn go" type="button">ABRIR VOTACION</button>
+          <button id="close" class="btn stop" type="button">CERRAR Y VIBRAR</button>
+          <button id="reveal" class="btn primary" type="button">
+            MOSTRAR RESULTADOS (pantalla y celulares)
+          </button>
+          <div class="btn-row">
+            <button id="prev" class="btn" type="button">Pregunta anterior</button>
+            <button id="next" class="btn" type="button">Siguiente pregunta</button>
+          </div>
+          <button id="reset" class="btn" type="button">Nueva ronda (volver a lobby)</button>
+        </div>
+
+        <div id="hostResultsCard" class="card hidden">
+          <div class="reveal-title">Resultados (vista privada)</div>
+          <div id="hostResults" class="results"></div>
+        </div>
+
+        <div class="card">
+          <label for="expected">Avisarme cuando lleguen a (cantidad de votantes)</label>
+          <input id="expected" type="number" min="1" inputmode="numeric" placeholder="ej: 100" />
+          <button id="test" class="btn" type="button">Probar vibracion</button>
+          <div id="status" class="status"></div>
+        </div>
+
+        <div class="card">
+          <label>Preguntas (de 2 a 5 opciones cada una)</label>
+          <div id="qEditor"></div>
+          <button id="addQuestion" class="btn" type="button">+ Agregar pregunta</button>
+          <button id="saveQuestions" class="btn primary" type="button">Guardar preguntas</button>
+          <div id="saveStatus" class="status"></div>
+        </div>
+
+        <div class="card">
+          <label>Diagnostico</label>
+          <div id="diag" class="status"></div>
+          <pre id="log" style="max-height: 200px; overflow: auto; font-size: 0.72rem; color: #9aa0b5; white-space: pre-wrap; margin: 8px 0 0"></pre>
+        </div>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/host.js"></script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Vota</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <h1 class="center">Vota</h1>
+      <p id="phaseLine" class="sub center">Esperando...</p>
+
+      <div id="questionCard" class="card center hidden">
+        <div id="questionText" class="question"></div>
+      </div>
+
+      <div id="voteCard" class="card center">
+        <p class="sub" style="margin-bottom: 12px">Escanear para votar</p>
+        <div id="qr"></div>
+        <p style="margin-top: 16px"><code id="voterUrl"></code></p>
+        <p class="sub" style="margin: 12px 0 0">Escribi en el navegador:</p>
+        <div id="voterUrlBig" class="url"></div>
+        <div id="counter" class="big">0</div>
+        <p class="sub" style="margin: 0">votos recibidos</p>
+        <button id="revealBtn" class="btn stop hidden" type="button">VER RESULTADOS</button>
+      </div>
+
+      <div id="resultsCard" class="card hidden">
+        <div class="reveal-title">Resultados</div>
+        <div id="results" class="results"></div>
+      </div>
+
+      <div class="card">
+        <p class="sub" style="margin: 0 0 8px">Accesos</p>
+        <a href="/voter.html">Ir a votar</a><br /><br />
+        <a href="/host.html">Panel del conductor</a>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/index.js"></script>
+  </body>
+</html>
