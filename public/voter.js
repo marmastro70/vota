@@ -180,4 +180,15 @@
     if (hasVoted()) showWaiting();
     else setStatus('La votacion se cerro.', 'err');
   });
+
+  socket.on('game:reset', function () {
+    try {
+      localStorage.removeItem('vv_vote');
+    } catch (e) {}
+    resultsCard.classList.add('hidden');
+    waitingEl.classList.add('hidden');
+    voteCard.classList.remove('hidden');
+    renderOptions(lastOptions);
+    setStatus('Juego reiniciado.');
+  });
 })();

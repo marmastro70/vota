@@ -359,6 +359,11 @@
     setStatus('Listo para nueva ronda.');
   });
 
+  document.getElementById('restart').addEventListener('click', function () {
+    if (socket) socket.emit('host:restart');
+    setStatus('Reiniciado: pregunta 1, sin votos.');
+  });
+
   document.getElementById('expected').addEventListener('change', function () {
     if (socket) socket.emit('host:expected', this.value);
   });

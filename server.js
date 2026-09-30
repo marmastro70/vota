@@ -250,6 +250,22 @@ io.on('connection', (socket) => {
       io.to('hosts').emit('host:phase', 'lobby');
     });
 
+    socket.on('host:restart', () => {
+      clearAutoClose();
+      state.qIndex = 0;
+      state.round = 0;
+      state.expected = null;
+      resetToLobby();
+      broadcastState();
+      io.emit('game:reset');
+      io.to('hosts').emit('host:notice', 'Juego reiniciado: pregunta 1, sin votos ni resultados');
+      io.to('hosts').emit('host:question', {
+        qIndex: 0,
+        question: currentQ().question,
+        options: currentQ().options
+      });
+    });
+
     socket.on('host:expected', (n) => {
       const num = Number(n);
       state.expected = Number.isFinite(num) && num > 0 ? Math.floor(num) : null;
