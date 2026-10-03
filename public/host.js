@@ -95,11 +95,11 @@
   function patternFor(pulses, tie) {
     var p = [];
     for (var i = 0; i < pulses; i++) {
-      if (i > 0) p.push(350);
-      p.push(500);
+      if (i > 0) p.push(450);
+      p.push(800);
     }
-    if (tie) p.push(350, 1000);
-    if (p.length % 2 !== 0) p.push(350);
+    if (tie) p.push(450, 1400);
+    if (p.length % 2 !== 0) p.push(450);
     return p;
   }
 
