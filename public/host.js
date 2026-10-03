@@ -93,12 +93,12 @@
   }
 
   function patternFor(pulses, tie) {
-    var p = [130, 650];
+    var p = [];
     for (var i = 0; i < pulses; i++) {
       p.push(420);
-      if (i < pulses - 1) p.push(260);
+      if (i < pulses - 1) p.push(300);
     }
-    if (tie) p.push(300, 180, 900);
+    if (tie) p.push(300, 1000);
     if (p.length % 2 !== 0) p.push(0);
     return p;
   }
@@ -120,8 +120,6 @@
   }
 
   function buzzFull() {
-    if (!canVibrate()) return;
-    navigator.vibrate([90, 120, 90, 0]);
     log('Todos votaron.');
     setStatus('Todos votaron.', 'ok');
   }
