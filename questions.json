@@ -1,32 +1,32 @@
 [
   {
-    "question": "cual es la mascota mas popular",
+    "question": "¿Qué es lo que más te frustra de las correcciones docentes?",
     "options": [
-      "Perro",
-      "Gato",
-      "Leon",
-      "Tigre",
-      "Oso"
+      "Que no les entiendas cuando hablan",
+      "Que te digan que está mal pero no te den la solución",
+      "Que las devoluciones sean vagas o de dos minutos",
+      "Las contradicciones entre docentes de la misma cátedra",
+      "Que se enfoquen solo en el render y no en el proyecto"
     ]
   },
   {
-    "question": "Comida favorita de los argentinos",
+    "question": "¿Cuál es el peor hábito que encontrás en los profesores?",
     "options": [
-      "Asado",
-      "Pizza",
-      "Milanesa",
-      "Empanadas",
-      "Pastas"
+      "Impuntualidad",
+      "Que den por sabido temas que nunca se explicaron",
+      "El maltrato o falta de empatía a la hora de evaluar",
+      "Que falten",
+      "La falta de claridad en las consignas y fechas"
     ]
   },
   {
-    "question": "Que se lleva a una isla desierta",
+    "question": "¿Qué le falta al cuerpo docente?",
     "options": [
-      "Agua",
-      "Cuchillo",
-      "Encendedor",
-      "Soga",
-      "Botiquin"
+      "Bajar la teoría a la realidad de la obra",
+      "Apertura a ideas o estilos diferentes a los suyos",
+      "Criterios de evaluación claros",
+      "Organización",
+      "Entusiasmo"
     ]
   }
 ]
