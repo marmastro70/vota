@@ -10,3 +10,7 @@ services:
         sync: false
       - key: VOTE_SECONDS
         value: "30"
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GIST_ID
+        sync: false

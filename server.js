@@ -154,6 +154,49 @@ function saveQuestions() {
   } catch (e) {
     // filesystem de solo lectura (algunos hostings): se mantiene en memoria
   }
+  saveQuestionsToGist();
+}
+
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+const GIST_ID = process.env.GIST_ID || '';
+
+function githubHeaders() {
+  return {
+    Authorization: 'token ' + GITHUB_TOKEN,
+    'User-Agent': 'vota',
+    'Content-Type': 'application/json'
+  };
+}
+
+async function fetchGistQuestions() {
+  if (!GITHUB_TOKEN || !GIST_ID) return null;
+  try {
+    const res = await fetch('https://api.github.com/gists/' + GIST_ID, {
+      headers: githubHeaders()
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const file = data.files && data.files['questions.json'];
+    if (!file) return null;
+    const content = file.truncated
+      ? await fetch(file.raw_url).then((r) => r.text())
+      : file.content;
+    const parsed = normalizeQuestions(JSON.parse(content));
+    return parsed.length ? parsed : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveQuestionsToGist() {
+  if (!GITHUB_TOKEN || !GIST_ID) return;
+  fetch('https://api.github.com/gists/' + GIST_ID, {
+    method: 'PATCH',
+    headers: githubHeaders(),
+    body: JSON.stringify({
+      files: { 'questions.json': { content: JSON.stringify(questions, null, 2) } }
+    })
+  }).catch(() => {});
 }
 
 io.on('connection', (socket) => {
@@ -329,8 +372,18 @@ app.get('/healthz', (req, res) =>
   res.json({ ok: true, phase: state.phase, total: totalVotes(), qIndex: state.qIndex })
 );
 
-server.listen(PORT, () => {
-  console.log(`Vota escuchando en http://localhost:${PORT}`);
-  console.log(`Token del conductor: ${HOST_TOKEN}`);
-  console.log(`Preguntas cargadas: ${questions.length}`);
-});
+async function start() {
+  const gistQuestions = await fetchGistQuestions();
+  if (gistQuestions) {
+    questions = gistQuestions;
+    console.log('Preguntas cargadas desde el Gist de GitHub');
+  }
+  server.listen(PORT, () => {
+    console.log(`Vota escuchando en http://localhost:${PORT}`);
+    console.log(`Token del conductor: ${HOST_TOKEN}`);
+    console.log(`Preguntas cargadas: ${questions.length}`);
+    console.log(`Persistencia GitHub: ${GITHUB_TOKEN && GIST_ID ? 'activada' : 'desactivada'}`);
+  });
+}
+
+start();
