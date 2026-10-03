@@ -103,7 +103,7 @@
 
     resultsCard.classList.add('hidden');
 
-    if (s.phase === 'voting' && s.question) {
+    if ((s.phase === 'voting' || s.phase === 'closed') && s.question) {
       questionText.textContent = s.question;
       var key = s.qIndex + ':' + s.options.join('|');
       if (key !== lastKey) {
@@ -112,14 +112,12 @@
       }
       questionCard.classList.remove('hidden');
       stage.classList.add('two-col');
-      phaseLine.textContent = votingLine();
+      phaseLine.textContent =
+        s.phase === 'voting' ? votingLine() : 'Votacion cerrada - esperando resultados';
     } else {
       questionCard.classList.add('hidden');
       stage.classList.remove('two-col');
-      phaseLine.textContent =
-        s.phase === 'closed'
-          ? 'Votacion cerrada - esperando resultados'
-          : 'Esperando que el conductor abra la votacion';
+      phaseLine.textContent = 'Esperando que el conductor abra la votacion';
     }
   });
 })();

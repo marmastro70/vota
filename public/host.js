@@ -330,13 +330,11 @@
 
   document.getElementById('open').addEventListener('click', function () {
     var seconds = Number(secondsEl.value) || 30;
-    if (canVibrate()) navigator.vibrate(60);
     if (socket) socket.emit('host:open', { seconds: seconds });
     setStatus('Votacion abierta por ' + seconds + 's.');
   });
 
   document.getElementById('close').addEventListener('click', function () {
-    if (canVibrate()) navigator.vibrate(30);
     if (socket) socket.emit('host:close');
     log('Emitido host:close...');
   });
