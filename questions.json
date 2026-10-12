@@ -1,32 +1,32 @@
 [
   {
-    "question": "¿Qué es lo que más te frustra de las correcciones docentes?",
+    "question": "¿Qué es lo que más te molesta cuando tratás con un ingeniero?",
     "options": [
-      "Que no les entiendas cuando hablan",
-      "Que te digan que está mal pero no te den la solución",
-      "Que las devoluciones sean vagas o de dos minutos",
-      "Las contradicciones entre docentes de la misma cátedra",
-      "Que se enfoquen solo en el render y no en el proyecto"
+      "La frase automática: \"eso no se puede hacer\"",
+      "Cero sensibilidad por el diseño o la estética",
+      "Respuestas lentas o demoras en entregar los planos",
+      "Explica todo en difícil y habla en otro idioma",
+      "Sobredimensiona todo por las dudas y encarece la obra"
     ]
   },
   {
-    "question": "¿Cuál es el peor hábito que encontrás en los profesores?",
+    "question": "¿Qué cualidad valorás más cuando encontrás al ingeniero ideal?",
     "options": [
-      "Impuntualidad",
-      "Que den por sabido temas que nunca se explicaron",
-      "El maltrato o falta de empatía a la hora de evaluar",
-      "Que falten",
-      "La falta de claridad en las consignas y fechas"
+      "Busca la vuelta para resolver lo que planteás sin recortar ideas",
+      "Predisposición, buena onda y cintura para charlar cambios",
+      "Planos clarísimos, precisos y listos para construir",
+      "Criterio para cuidar el bolsillo y optimizar costos",
+      "Rapidez de respuesta cuando quema una duda en el proyecto o la obra"
     ]
   },
   {
-    "question": "¿Qué le falta al cuerpo docente?",
+    "question": "¿Qué es lo primero que se te cruza por la cabeza cuando el calculista dice: \"Acá necesitamos agregar una columna\"?",
     "options": [
-      "Bajar la teoría a la realidad de la obra",
-      "Apertura a ideas o estilos diferentes a los suyos",
-      "Criterios de evaluación claros",
-      "Organización",
-      "Entusiasmo"
+      "Me arruina el proyecto",
+      "Es un exagerado, seguro sobredimensiona por las dudas",
+      "¿Cómo hago para taparla o meterla adentro de un placard?",
+      "Cambio de ingeniero",
+      "No la vamos a poner de todos modos"
     ]
   }
 ]
